@@ -18,6 +18,7 @@ export default function ChatInterface() {
   };
 
   const handleSendButton = () => {
+    handleAsyncQuery()
     setInputValue("");
 
     if (!startMode) setStartMode(true);
@@ -25,11 +26,11 @@ export default function ChatInterface() {
         ...prevMessages,
         { sender: "User", message: inputValue },
     ]);
-    
-    handleAsyncQuery()
   }
+  
   const handleAsyncQuery = async () => {
-      const botMessage = await askPrompt(pastMessages);
+      const ctx = pastMessages.map(({ sender, message }) => `${sender}: ${message}`).join("\n");
+      const botMessage = await askPrompt(ctx, inputValue);
       setPastMessages((prevMessages) => [
           ...prevMessages,
           { sender: "Bot", message: botMessage },
