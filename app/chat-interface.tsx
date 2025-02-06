@@ -29,20 +29,11 @@ export default function ChatInterface() {
     handleAsyncQuery()
   }
   const handleAsyncQuery = async () => {
-    try {
-        const botMessage = await askPrompt(pastMessages);
-        setPastMessages((prevMessages) => [
-            ...prevMessages,
-            { sender: "Bot", message: botMessage },
-        ]);
-
-    } catch (error) {
-        console.error("Error fetching bot response:", error);
-        setPastMessages((prevMessages) => [
-            ...prevMessages,
-            { sender: "Bot", message: "Sorry, something went wrong." },
-        ]);
-    }
+      const botMessage = await askPrompt(pastMessages);
+      setPastMessages((prevMessages) => [
+          ...prevMessages,
+          { sender: "Bot", message: botMessage },
+      ]);
   };
 
   return (
