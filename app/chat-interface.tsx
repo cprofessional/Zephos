@@ -3,7 +3,8 @@ import { MoreHorizontal, Plus, Search, Mic, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import askPrompt from "./openai";
+import OpenAIWrapper from "../lib/openai";
+const openAi = new OpenAIWrapper();
 
 export default function ChatInterface() {
   const [inputValue, setInputValue] = useState("");
@@ -18,7 +19,6 @@ export default function ChatInterface() {
   };
 
   const handleSendButton = () => {
-    handleAsyncQuery()
     setInputValue("");
 
     if (!startMode) setStartMode(true);
@@ -26,11 +26,13 @@ export default function ChatInterface() {
         ...prevMessages,
         { sender: "User", message: inputValue },
     ]);
+
+    handleAsyncQuery();
   }
   
   const handleAsyncQuery = async () => {
       const ctx = pastMessages.map(({ sender, message }) => `${sender}: ${message}`).join("\n");
-      const botMessage = await askPrompt(ctx, inputValue);
+      const botMessage = await openAi.newCompletion(ctx, inputValue);
       setPastMessages((prevMessages) => [
           ...prevMessages,
           { sender: "Bot", message: botMessage },
@@ -117,3 +119,4 @@ export default function ChatInterface() {
     </div>
   );
 }
+
