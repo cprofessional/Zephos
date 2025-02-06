@@ -1,4 +1,4 @@
-export default async function askPrompt(context: { sender: string; message: string }[]): Promise<string> {
+export default async function askPrompt(ctx: string, p: string): Promise<string> {
     try {
         const res = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
@@ -11,13 +11,12 @@ export default async function askPrompt(context: { sender: string; message: stri
                 messages: [
                     {
                         role: "system",
-                        content: context,
+                        content: "THESE ARE OUR PAST MESSAGES: "+ctx+" THIS IS THE NEWEST PROMPT: "+p,
                     },
                 ],
             }),
         });
     
-
         const json = await res.json();
         return json.choices[0].message.content;
     } catch (err) {
