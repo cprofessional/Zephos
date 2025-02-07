@@ -58,7 +58,7 @@ export default function ChatInterface() {
           <div
             key={index}
             className={`bg-[#3A3B3A] p-4 rounded-lg ${
-              msg.sender === "User" ? "bg-[#2a2b2a] ml-auto" : "mr-auto"
+              msg.sender === "User" ? " ml-auto" : "bg-[#2b2d31] mr-auto"
             }`}
             style={{
               maxWidth: "92%",
