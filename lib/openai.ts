@@ -2,10 +2,11 @@ export default class OpenAIWrapper {
     public apiKey: string | undefined
 
     public constructor() {
-        this.apiKey = process.env.OPENAI_API_KEYnv
+        this.apiKey = process.env.OPENAI_API_KEY
     }
 
     public async newCompletion(ctx: string, p: string): Promise < string > {
+      console.log(this.apiKey)
         try {
             const res = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",

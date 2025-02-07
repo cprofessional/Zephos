@@ -57,8 +57,8 @@ export default function ChatInterface() {
         {pastMessages.map((msg, index) => (
           <div
             key={index}
-            className={`bg-[#3A3B3A] p-4 rounded-lg ${
-              msg.sender === "User" ? " ml-auto" : "bg-[#2b2d31] mr-auto"
+            className={`p-4 rounded-lg ${
+              msg.sender === "User" ? "bg-[#3A3B3A] ml-auto" : "bg-[#2b2d31] mr-auto"
             }`}
             style={{
               maxWidth: "92%",
