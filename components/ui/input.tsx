@@ -10,7 +10,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({type, value, ...props }, ref) => {
     return (
       <input
-        placeholder="IWantToKillMyself-GPT"
+        placeholder="Ask Zephos..."
         type={type}
         value={value}
         className={cn(
