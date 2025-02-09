@@ -1,7 +1,11 @@
 export default class OpenAIWrapper {
-    private apiKey = process.env.OPENAI_API_KEY;
+    private apiKey: string | undefined;
 
-    public async newCompletion(ctx: string, p: string): Promise < string > {
+    public constructor() {
+        this.apiKey = process.env.OPENAI_API_KEY;
+    }
+
+    public async newCompletion(ctx: string, p: string): Promise<string> {
         try {
             const res = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
@@ -11,10 +15,12 @@ export default class OpenAIWrapper {
                 },
                 body: JSON.stringify({
                     model: "gpt-4o-mini",
-                    messages: [{
-                        role: "system",
-                        content: "THESE ARE OUR PAST MESSAGES: " + ctx + " THIS IS THE NEWEST PROMPT: " + p,
-                    }, ],
+                    messages: [
+                        {
+                            role: "system",
+                            content: "THESE ARE OUR PAST MESSAGES: " + ctx + " THIS IS THE NEWEST PROMPT: " + p,
+                        },
+                    ],
                 }),
             });
 
@@ -22,7 +28,7 @@ export default class OpenAIWrapper {
             return json.choices[0].message.content;
         } catch (err) {
             console.log("There was an error: " + err);
-            return "There was an issue connecting to OpenAI"
+            return "There was an issue connecting to OpenAI";
         }
     }
 }
