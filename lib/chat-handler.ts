@@ -1,6 +1,7 @@
+import { ChangeEvent } from "react";
 import OpenAIWrapper from "./openai";
 
-export const handleInputChange = (event: { target: { value: any } }, setInputValue: (value: string) => void) => {
+export const handleInputChange = (event: ChangeEvent<HTMLInputElement>, setInputValue: (value: string) => void) => {
     if(event.target.value == "") setInputValue("");
     else setInputValue(event.target.value);
 };

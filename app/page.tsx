@@ -4,7 +4,7 @@ import OpenAIWrapper from "../lib/openai";
 import SearchBar from "@/components/search-bar";
 import Messages from "@/components/messages";
 import { handleInputChange, handleSendButton } from "../lib/chat-handler";
-const openAi = new OpenAIWrapper();
+const ai = new OpenAIWrapper();
 
 export default function Home() {
     const [inputValue, setInputValue] = useState("");
@@ -14,8 +14,9 @@ export default function Home() {
     >([]);
   
     const handleSend = () => {
-      handleSendButton(inputValue, setInputValue, setStartMode, setPastMessages, openAi, pastMessages);
+      handleSendButton(inputValue, setInputValue, setStartMode, setPastMessages, ai, pastMessages);
     };
+
   return (
     <div
     className={`min-h-screen bg-[#1E1F1E] text-white flex items-center justify-center`}

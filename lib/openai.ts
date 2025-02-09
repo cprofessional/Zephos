@@ -1,9 +1,5 @@
 export default class OpenAIWrapper {
-    public apiKey: string | undefined
-
-    public constructor() {
-        this.apiKey = process.env.OPENAI_API_KEY
-    }
+    private apiKey = process.env.OPENAI_API_KEY;
 
     public async newCompletion(ctx: string, p: string): Promise < string > {
         try {
@@ -28,6 +24,5 @@ export default class OpenAIWrapper {
             console.log("There was an error: " + err);
             return "There was an issue connecting to OpenAI"
         }
-
     }
 }
