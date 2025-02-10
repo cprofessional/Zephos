@@ -1,5 +1,7 @@
 import { ChangeEvent } from "react";
-import OpenAIWrapper from "./openai";
+import OpenAIWrapper from "./llm/openai";
+import GeminiWrapper from "./llm/gemini";
+import LLMManager from "./llm_manager";
 
 export const handleInputChange = (event: ChangeEvent<HTMLInputElement>, setInputValue: (value: string) => void) => {
     if(event.target.value == "") setInputValue("");
@@ -19,7 +21,6 @@ export const handleSendButton = async (
     setInputValue: (value: string) => void,
     setStartMode: (value: boolean) => void,
     setPastMessages: (callback: (prevMessages: { sender: string; message: string; files?: File[] }[]) => { sender: string; message: string; files?: File[] }[]) => void,
-    openAi: OpenAIWrapper,
     pastMessages: { sender: string; message: string; files?: File[] }[],
 ) => {
 
@@ -34,7 +35,7 @@ export const handleSendButton = async (
     const ctx = pastMessages.map(({ sender, message }) => `${sender}: ${message}`).join("\n");
 
     let botMessage = "";
-    botMessage = await openAi.newCompletion(ctx, inputValue);
+    botMessage = await LLMManager.getOpenAIAPI().newCompletion(ctx, inputValue);
     setPastMessages((prevMessages) => [
         ...prevMessages,
         { sender: "Bot", message: botMessage },

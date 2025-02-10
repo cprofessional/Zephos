@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
-import OpenAIWrapper from "../lib/openai";
 import SearchBar from "@/components/search-bar";
 import Messages from "@/components/messages";
 import FileDropZone from "@/components/file/drop";
 import { handleInputChange, handleSendButton } from "../lib/chat-handler";
-
-const ai = new OpenAIWrapper();
+import LLMManager from "@/lib/llm_manager";
+new LLMManager();
 
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
@@ -17,7 +16,7 @@ export default function Home() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   const handleSend = () => {
-    handleSendButton(inputValue, uploadedFiles, setInputValue, setStartMode, setPastMessages, ai, pastMessages);
+    handleSendButton(inputValue, uploadedFiles, setInputValue, setStartMode, setPastMessages, pastMessages);
   };
 
   return (
