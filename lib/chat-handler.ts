@@ -6,27 +6,38 @@ export const handleInputChange = (event: ChangeEvent<HTMLInputElement>, setInput
     else setInputValue(event.target.value);
 };
 
+const toBase64 = (file: File) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+});
+
 export const handleSendButton = async (
     inputValue: string,
+    uploadedFiles: File[],
     setInputValue: (value: string) => void,
     setStartMode: (value: boolean) => void,
-    setPastMessages: (callback: (prevMessages: { sender: string;message: string } []) => { sender: string;message: string } []) => void,
+    setPastMessages: (callback: (prevMessages: { sender: string; message: string }[]) => { sender: string; message: string }[]) => void,
     openAi: OpenAIWrapper,
-    pastMessages: { sender: string;message: string } []
+    pastMessages: { sender: string; message: string }[],
 ) => {
+
     if(inputValue === "") return;
     setInputValue("");
 
     if(typeof setStartMode === 'function') setStartMode(true);
     setPastMessages((prevMessages) => [
-    ...prevMessages,
+        ...prevMessages,
         { sender: "User", message: inputValue },
-  ]);
+    ]);
 
     const ctx = pastMessages.map(({ sender, message }) => `${sender}: ${message}`).join("\n");
-    const botMessage = await openAi.newCompletion(ctx, inputValue);
+
+    let botMessage = "";
+    botMessage = await openAi.newCompletion(ctx, inputValue);
     setPastMessages((prevMessages) => [
-    ...prevMessages,
+        ...prevMessages,
         { sender: "Bot", message: botMessage },
-  ]);
+    ]);
 };
