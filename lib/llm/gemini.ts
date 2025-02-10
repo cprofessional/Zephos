@@ -1,26 +1,16 @@
-export default class GeminiWrapper {
-    private apiKey = process.env.NEXT_PUBLIC_GEMINI_KEY
+import { LLM } from "./llm";
 
-    public async newCompletion(ctx: string, p: string): Promise<string> {
-        try {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${this.apiKey}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        "parts":[{"text": "Explain how AI works"}]
-                    }]
-                }),
-            });
+export default class GeminiWrapper extends LLM {
+    
+    public getDefaultModels(): { languageModel: string; imageModel: string; model: string; } {
+        return { languageModel: "gemini", imageModel: "gemini-2.0-flash", model: "emini-2.0-flash" };
+    }
 
-            const json = await res.json();
-            console.log(json)
-            return json.choices[0].message.content;
-        } catch (err) {
-            console.log("There was an error: " + err);
-            return "There was an issue connecting to OpenAI";
-        }
+    public async newCompletion(ctx: string, p: string, model: string, imgctx: string | undefined): Promise<string> {
+        return "NOOP";
+    }
+
+    public async newFileCompletion(files: File[]): Promise<string> { 
+        return `user uploaded a file named ${files[0].name}`
     }
 }

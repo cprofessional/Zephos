@@ -1,7 +1,13 @@
-export default class OpenAIWrapper {
-    private apiKey = process.env.NEXT_PUBLIC_OPENAI_KEY
+import { LLM } from "./llm";
 
-    public async newCompletion(ctx: string, p: string): Promise<string> {
+export default class OpenAIWrapper extends LLM {
+
+    public getDefaultModels(): { languageModel: string; imageModel: string; model: string; } {
+        return { languageModel: "openai", imageModel: "gemini-2.0-flash", model: "gpt-4o-mini" };
+    }
+
+    public async newCompletion(ctx: string, p: string, model: string, imgctx: string | undefined): Promise<string> {
+        console.log(p);
         try {
             const res = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
@@ -10,11 +16,11 @@ export default class OpenAIWrapper {
                     Authorization: `Bearer ${this.apiKey}`,
                 },
                 body: JSON.stringify({
-                    model: "gpt-4o-mini",
+                    model: model,
                     messages: [
                         {
                             role: "system",
-                            content: "THESE ARE OUR PAST MESSAGES: " + ctx + " THIS IS THE NEWEST PROMPT: " + p,
+                            content: imgctx ? this.getImageContext(p, ctx, imgctx) : this.getDefaultContent(p, ctx)
                         },
                     ],
                 }),
