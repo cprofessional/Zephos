@@ -24,7 +24,9 @@ const handleRequest = async (prompt: string, ctx: string, uploadedFiles: File[],
 const handleFiles = async (uploadedFiles: File[], opts: { languageModel: string; imageModel: string, model: string }): Promise<string> => {
     switch(opts.imageModel) {
         case "gemini": 
-            return LLMManager.getGemeniAPI().newFileCompletion(uploadedFiles);
+            let d = LLMManager.getGemeniAPI().newFileCompletion(uploadedFiles[0]);
+            console.log(d)
+            return d
         default:
             console.error("handleRequest error, invalid imageModel.");
             return "handleRequest error, invalid imageModel.";

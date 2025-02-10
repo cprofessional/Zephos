@@ -3,12 +3,12 @@ import { LLM } from "./llm";
 export default class GeminiWrapper extends LLM {
     
     public getDefaultModels(): { languageModel: string; imageModel: string; model: string; } {
-        return { languageModel: "gemini", imageModel: "gemini-2.0-flash", model: "emini-2.0-flash" };
+        return { languageModel: "gemini", imageModel: "gemini", model: "gemini-2.0-flash" };
     }
 
     public async newCompletion(ctx: string, p: string, model: string, imgctx: string | undefined): Promise<string> {
         try {
-            const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + "AIzaSyAvBt4hcVpfwIzp_EBjIxMsCOn8KPPE5R4", {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.apiKey}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,7 +30,34 @@ export default class GeminiWrapper extends LLM {
         }
     }
 
-    public async newFileCompletion(files: File[]): Promise<string> { 
-        return `user uploaded a file named ${files[0].name}`
+    public async newFileCompletion(f: File): Promise<string> { 
+        try {
+            let numBytes = f.size;
+            let mimeType = f.type;
+            const res = await fetch(`https://generativelanguage.googleapis.com/upload/v1beta/files?key=${this.apiKey}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Goog-Upload-Protocol": "resumable",
+                    "X-Goog-Upload-Command": "start", 
+                    "X-Goog-Upload-Header-Content-Length": String(numBytes),
+                    "X-Goog-Upload-Header-Content-Type": mimeType
+                },
+                body: JSON.stringify({
+                    file: {
+                        display_name: f.name
+                    }
+                }),
+            });
+
+            const json = await res.json();
+            console.log('________');
+            console.log(json);
+            console.log('________');
+            return "D";
+        } catch (err) {
+            console.log("There was an error: " + err);
+            return "There was an issue connecting to Google Gemini";
+        }
     }
 }
