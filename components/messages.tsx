@@ -1,8 +1,10 @@
 import React from 'react';
+import { Images } from "lucide-react";
 
 interface Message {
     sender: string;
     message: string;
+    files?: File[];
 }
 
 interface MessagesProps {
@@ -36,7 +38,17 @@ const Messages: React.FC<MessagesProps> = ({ pastMessages }) => {
                         fontSize: "13px",
                     }}
                 >
-                    {msg.message}
+                    <p>{msg.message}</p>
+                    {msg.files && msg.files.length > 0 && (
+                        <div className="w-full flex flex-wrap gap-2 mt-2">
+                            {msg.files.map((file, fileIndex) => (
+                                <div key={fileIndex} className="flex items-center space-x-2 bg-[#40414F] p-1 rounded">
+                                    <Images className="h-5 w-5" />
+                                    <span className="text-sm">{file.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             ))}
         </div>

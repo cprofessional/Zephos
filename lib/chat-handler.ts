@@ -18,18 +18,17 @@ export const handleSendButton = async (
     uploadedFiles: File[],
     setInputValue: (value: string) => void,
     setStartMode: (value: boolean) => void,
-    setPastMessages: (callback: (prevMessages: { sender: string; message: string }[]) => { sender: string; message: string }[]) => void,
+    setPastMessages: (callback: (prevMessages: { sender: string; message: string; files?: File[] }[]) => { sender: string; message: string; files?: File[] }[]) => void,
     openAi: OpenAIWrapper,
-    pastMessages: { sender: string; message: string }[],
+    pastMessages: { sender: string; message: string; files?: File[] }[],
 ) => {
 
     if(inputValue === "") return;
     setInputValue("");
-
     if(typeof setStartMode === 'function') setStartMode(true);
     setPastMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "User", message: inputValue },
+        { sender: "User", message: inputValue, files: uploadedFiles },
     ]);
 
     const ctx = pastMessages.map(({ sender, message }) => `${sender}: ${message}`).join("\n");

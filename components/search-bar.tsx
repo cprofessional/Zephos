@@ -1,7 +1,9 @@
-import { MoreHorizontal, Plus, Images, Mic, Send, X } from "lucide-react";
-import React, { useRef, useState, useEffect } from 'react';
+import { MoreHorizontal, Images, Mic, Send } from "lucide-react";
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import FilePreview from './file/preview';
+import FileInput from './file/input';
 
 interface SearchBarProps {
     inputValue: string;
@@ -11,15 +13,7 @@ interface SearchBarProps {
     onSend: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ inputValue, uploadedFiles, setUploadedFiles, onInputChange, onSend}) => {
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const onAdd = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-
+const SearchBar: React.FC<SearchBarProps> = ({ inputValue, uploadedFiles, setUploadedFiles, onInputChange, onSend }) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
@@ -38,31 +32,34 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputValue, uploadedFiles, setUpl
         setUploadedFiles([]);
     };
 
+    const handlePaste = (e: ClipboardEvent) => {
+        const items = e.clipboardData?.items;
+        if (items) {
+            Array.from(items).forEach((item) => {
+                const file = item.getAsFile();
+                if (file) setUploadedFiles([...uploadedFiles, file]);
+            });
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("paste", handlePaste);
+        return () => {
+            document.removeEventListener("paste", handlePaste);
+        };
+    }, [uploadedFiles]);
+
     return (
         <div className="relative flex flex-col items-center bg-[#2A2B2A] rounded-lg p-2 space-y-4">
             {uploadedFiles.length > 0 && (
                 <div className="w-full flex flex-wrap gap-2">
                     {uploadedFiles.map((file, index) => (
-                        <div key={index} className="flex items-center space-x-2 bg-[#40414F] p-1 rounded">
-                            <Images className="h-5 w-5" />
-                            <span className="text-sm">{file.name}</span>
-                            <Button variant="ghost" size="icon" onClick={() => handleRemoveFile(index)}>
-                                <X className="h-5 w-5" />
-                            </Button>
-                        </div>
+                        <FilePreview key={index} file={file} onRemove={() => handleRemoveFile(index)} />
                     ))}
                 </div>
             )}
             <div className="relative flex items-center w-full bg-[#2A2B2A] rounded-lg">
-                <Button variant="ghost" className="absolute left-0" onClick={onAdd}>
-                    <Plus className="h-5 w-5" />
-                </Button>
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    className="hidden"
-                    onChange={handleFileChange}
-                />
+                <FileInput onFileChange={handleFileChange} />
                 <Input
                     onChange={onInputChange}
                     value={inputValue}
@@ -77,7 +74,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ inputValue, uploadedFiles, setUpl
                         </Button>
                     ) : (
                         <>
-                            <Button variant="ghost" size="icon" >
+                            <Button variant="ghost" size="icon">
                                 <Images className="h-5 w-5" />
                             </Button>
                             <Button variant="ghost" size="icon">

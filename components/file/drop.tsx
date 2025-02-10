@@ -13,6 +13,7 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({ setUploadedFiles, uploadedF
   const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
+
     setUploadedFiles([...uploadedFiles, ...files]);
     setIsDragOver(false);
     setDragEnterCounter(0);

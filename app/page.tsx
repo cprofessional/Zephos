@@ -3,7 +3,7 @@ import { useState } from "react";
 import OpenAIWrapper from "../lib/openai";
 import SearchBar from "@/components/search-bar";
 import Messages from "@/components/messages";
-import FileDropZone from "@/components/file-drop";
+import FileDropZone from "@/components/file/drop";
 import { handleInputChange, handleSendButton } from "../lib/chat-handler";
 
 const ai = new OpenAIWrapper();
@@ -12,7 +12,7 @@ export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [startMode, setStartMode] = useState(false);
   const [pastMessages, setPastMessages] = useState<
-    { sender: string; message: string }[]
+    { sender: string; message: string; files?: File[] }[]
   >([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
