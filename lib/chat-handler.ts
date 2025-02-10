@@ -31,6 +31,4 @@ export const handleSend = async (
         ...prevMessages,
         { sender: "Bot", message: resp, files: uploadedFiles },
     ]);
-
-    console.log(resp);
 };

@@ -7,7 +7,6 @@ export default class OpenAIWrapper extends LLM {
     }
 
     public async newCompletion(ctx: string, p: string, model: string, imgctx: string | undefined): Promise<string> {
-        console.log(p);
         try {
             const res = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",

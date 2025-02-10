@@ -7,7 +7,7 @@ export default class LLMManager {
     private static copioletApi = new CoPioletWrapper(process.env.NEXT_PUBLIC_COPIOLET_KEY);
     private static openaiApi = new OpenAIWrapper(process.env.NEXT_PUBLIC_OPENAI_KEY);
     private static deepseekApi = new DeepseekWrapper(process.env.NEXT_PUBLIC_DEEPSEEK_KEY);
-    private static gemeniApi = new GeminiWrapper(process.env.NEXT_PUBLIC_GEMENI_KEY);
+    private static gemeniApi = new GeminiWrapper(process.env.NEXT_PUBLIC_GEMINI_KEY);
 
     public static getCoPioletAPI() {
         return this.copioletApi;
