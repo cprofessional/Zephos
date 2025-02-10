@@ -11,3 +11,6 @@ Zephos is an AI assistant built with Next.js and TypeScript. It uses the latest 
 - Custom-trained AI responses  
 - Fast and scalable  
 - Adaptive learning
+
+## Requirements 
+- Implement NEXT_PUBLIC_OPENAI_KEY in .env
