@@ -20,7 +20,6 @@ const Models: React.FC<ModelsProps> = ({
           case "openai": setModels(LLMManager.getOpenAIAPI().getDefaultModels()); break;
           case "deepseek": setModels(LLMManager.getDeepSeekAPI().getDefaultModels()); break;
           case "gemini": setModels(LLMManager.getGemeniAPI().getDefaultModels()); break;
-          case "copilot": setModels(LLMManager.getCoPioletAPI().getDefaultModels()); break;
         }
     
         setVisualModel(selectedModel);
@@ -36,7 +35,6 @@ const Models: React.FC<ModelsProps> = ({
             <option value="openai">OpenAI</option>
             <option value="gemini">Gemini</option>
             <option value="deepseek">DeepSeek</option>
-            <option value="copilot">Copilot</option>
           </select>
         </div>
     );

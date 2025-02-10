@@ -31,6 +31,7 @@ export default class GeminiWrapper extends LLM {
     }
 
     public async newFileCompletion(f: File): Promise<string> { 
+        return "The user uploaded a file named "+f.name;
         try {
             let numBytes = f.size;
             let mimeType = f.type;
@@ -49,12 +50,6 @@ export default class GeminiWrapper extends LLM {
                     }
                 }),
             });
-
-            const json = await res.json();
-            console.log('________');
-            console.log(json);
-            console.log('________');
-            return "D";
         } catch (err) {
             console.log("There was an error: " + err);
             return "There was an issue connecting to Google Gemini";

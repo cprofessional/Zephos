@@ -13,8 +13,6 @@ const handleRequest = async (prompt: string, ctx: string, uploadedFiles: File[],
             return LLMManager.getGemeniAPI().newCompletion(ctx, prompt, opts.model, imgctx);
         case "deepseek": 
             return LLMManager.getDeepSeekAPI().newCompletion(ctx, prompt, opts.model, imgctx);
-        case "copilot": 
-            return LLMManager.getCoPioletAPI().newCompletion(ctx, prompt, opts.model, imgctx);
         default:
             console.error("handleRequest error, invalid languageModel.");
             return "handleRequest error, invalid languageModel.";
